@@ -1,0 +1,21 @@
+{
+  "name": "ssv-backend",
+  "type": "module",
+  "main": "src/server.mjs",
+  "scripts": {
+    "dev": "nodemon --watch src --ext mjs --exec node src/server.mjs",
+    "start": "node src/server.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fast-xml-parser": "^5.3.1",
+    "morgan": "^1.10.1",
+    "node-fetch": "^3.3.2",
+    "somali-star-view": "file:.."
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

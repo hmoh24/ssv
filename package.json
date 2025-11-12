@@ -1,17 +1,25 @@
 {
-  "devDependencies": {
-    "css-loader": "^7.1.2",
-    "html-loader": "^5.1.0",
-    "html-webpack-plugin": "^5.6.3",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-merge": "^6.0.1"
-  },
+  "name": "somali-star-view",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Root scripts for frontend, backend, and RSSHub dev workflow.",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "dev": "webpack serve --config webpack.dev.js",
-    "deploy": "git subtree push --prefix dist origin gh-pages"
+    "install-frontend": "npm --prefix frontend install",
+    "install-backend": "npm --prefix backend install",
+    "install-all": "npm run install-frontend && npm run install-backend",
+    "dev-frontend": "npm --prefix frontend run dev",
+    "build-frontend": "npm --prefix frontend run build",
+    "deploy-frontend": "npm --prefix frontend run deploy",
+    "dev-backend": "npm --prefix backend run dev",
+    "start-backend": "npm --prefix backend start",
+    "rsshub-up": "cd rsshub && docker compose up -d",
+    "rsshub-down": "cd rsshub && docker compose down",
+    "rsshub-logs": "cd rsshub && docker compose logs -f rsshub"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

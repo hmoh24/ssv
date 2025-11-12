@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  rsshub:
+    image: diygod/rsshub:latest
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: memory
+      YOUTUBE_KEY: ${YOUTUBE_KEY}
+    ports:
+      - "1200:1200"
+    restart: unless-stopped
