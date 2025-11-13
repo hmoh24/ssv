@@ -12,7 +12,7 @@ app.use(express.json());
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 // Routes
-app.use("/api/youtube", youtubeRouter);
+app.use("/api", youtubeRouter);
 
 // Fallback 404
 app.use((_req, res) => res.status(404).json({ error: "Not found" }));
