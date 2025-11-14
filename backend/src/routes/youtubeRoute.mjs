@@ -1,12 +1,39 @@
-// routes/youtube.mjs
 import { Router } from "express";
+import youtubeJson from "../feedSources/youtube.json" assert { type: "json" };
+import youtubeBulkCallbackFunction from "../routeLogic/youtubeBulkCall.js";
 import Parser from "rss-parser";
-const parser = new Parser();
-console.log("[youtubeRouter] file loaded");
 
+const parser = new Parser();
 const router = Router();
 
-router.get("/youtube/channel/:id", async function (req, res, next) {
+// GET /api/youtube/bulk
+router.get("/bulk", async (req, res, next) => {
+  try {
+    console.log("Youtube Route - bulk fetch from file");
+
+    const feedArray = await Promise.all(
+      youtubeJson.creators.map((youtuber) =>
+        youtubeBulkCallbackFunction(youtuber)
+      )
+    );
+
+    const bulkFeedObject = {
+      feedType: "bulk",
+      feedArray,
+    };
+
+    res.json({
+      status: "ok",
+      processed: youtubeJson.creators.length,
+      bulkFeedObject,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/youtube/channel/:id
+router.get("/channel/:id", async function (req, res, next) {
   try {
     console.log("Youtube Route - fetching feed");
     const feed = await parser.parseURL(
@@ -35,4 +62,4 @@ router.get("/youtube/channel/:id", async function (req, res, next) {
   }
 });
 
-export default router; // ← add this
+export default router;

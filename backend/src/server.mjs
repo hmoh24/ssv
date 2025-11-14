@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import youtubeRouter from "./routes/youtube.mjs";
+import youtube from "./routes/youtubeRoute.mjs";
 
 const app = express();
 app.use(cors());
@@ -12,7 +12,7 @@ app.use(express.json());
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 // Routes
-app.use("/api", youtubeRouter);
+app.use("/api/youtube/", youtube);
 
 // Fallback 404
 app.use((_req, res) => res.status(404).json({ error: "Not found" }));
