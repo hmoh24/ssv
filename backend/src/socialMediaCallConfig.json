@@ -1,0 +1,12 @@
+{
+  "testing": {
+    "jitterMs": 0,
+    "maxConcurrentCalls": 3,
+    "timeBetweenCallsMs": 0
+  },
+  "youtube": {
+    "jitterMs": 0,
+    "maxConcurrentCalls": 3,
+    "timeBetweenCallsMs": 1000
+  }
+}

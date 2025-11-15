@@ -1,7 +1,7 @@
 import Parser from "rss-parser";
 const parser = new Parser();
 
-async function youtubeBulkCallbackFunction(youtuber) {
+async function fetchYoutuberFeedData(youtuber) {
   const feed = await parser.parseURL(
     `http://localhost:1200/youtube/channel/${youtuber.id}`
   );
@@ -24,4 +24,4 @@ async function youtubeBulkCallbackFunction(youtuber) {
   return feedObject;
 }
 
-export default youtubeBulkCallbackFunction;
+export default fetchYoutuberFeedData;
