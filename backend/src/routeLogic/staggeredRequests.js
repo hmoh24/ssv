@@ -28,7 +28,6 @@ async function staggeredRequests(
         return fetchYoutuberDataCallback(youtuber);
       })
     );
-    console.log(unwrappedFeedData);
     feedObjectsArray.push(unwrappedFeedData);
     await timeOut;
   }

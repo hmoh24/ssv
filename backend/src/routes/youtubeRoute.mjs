@@ -4,6 +4,7 @@ import fetchYoutuberFeedData from "../routeLogic/fetchYoutuberFeedData.js";
 import socialMediaCallConfig from "../socialMediaCallConfig.json" assert { type: "json" };
 import Parser from "rss-parser";
 import staggeredRequests from "../routeLogic/staggeredRequests.js";
+import { logNetworkCall } from "../logging/networkCalls/logNetworkCall.js";
 
 const parser = new Parser();
 const router = Router();
@@ -13,6 +14,19 @@ const {
 
 // GET /api/youtube/bulk
 router.get("/bulk", async (req, res, next) => {
+  const formatted = new Date()
+    .toLocaleString("en-GB", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    })
+    .replace(",", "");
+
   try {
     console.log("Youtube Route - bulk fetch from file");
     const feedArray = await staggeredRequests(
@@ -27,18 +41,43 @@ router.get("/bulk", async (req, res, next) => {
       feedType: "bulk",
       feedArray,
     };
+    const totalCreators = youtubeJson.creators.length;
+    const totalPostsFetched = bulkFeedObject.feedArray.reduce(
+      (prevResult, current) => {
+        return prevResult + current.feedItems.length;
+      },
+      0
+    );
+
+    const logData = {
+      type: "success",
+      source: "youtube",
+      creatorsRequested: totalCreators,
+      postsFetched: totalPostsFetched,
+      timeLogged: formatted,
+    };
+
+    logNetworkCall(logData, false);
 
     res.json({
       status: "ok",
-      processed: youtubeJson.creators.length,
+      creatorsProcessed: totalCreators,
       bulkFeedObject,
     });
   } catch (e) {
     next(e);
+    const logData = {
+      type: "error",
+      source: "youtube",
+      message: e,
+      timeLogged: formatted,
+    };
+    logNetworkCall(logData, false);
   }
 });
 
 // GET /api/youtube/channel/:id
+// no logging
 router.get("/channel/:id", async function (req, res, next) {
   try {
     console.log("Youtube Route - fetching feed");
